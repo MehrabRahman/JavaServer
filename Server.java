@@ -32,6 +32,11 @@ public class Server {
 	public void handle(Socket client) throws IOException {
 		Request req = new Request(client.getInputStream());
 		Response res = new Response(client.getOutputStream());
+		switch (req.getPath()) {
+			case "/" -> res.send("Hello from JavaServer!");
+			case "/test" -> res.send("You've found the test endpoint.");
+			default -> res.send("That's not a supported endpoint... perhaps we should return a 404 HTTP Status code instead?");
+		}
 	}
 }
 
@@ -64,15 +69,12 @@ class Response {
 	
 	public Response(OutputStream outputStream) throws IOException {
 		this.out = new PrintWriter(outputStream, true);
-		send();
 	}
 
-	public void send() throws IOException {
-		String body = "Hello from JavaServer!";
-		int length = body.length() + 1;
+	public void send(String body) throws IOException {
 		out.println("HTTP/1.1 200 OK");
 		out.println("Connection: close");
-		out.println("Content-Length: " + length);
+		out.println("Content-Length: " + body.length());
 		out.println();
 		out.println(body);
 	}
