@@ -43,7 +43,7 @@ class UnitTests {
 
     @JTest
     public void subTest() {
-        int expected = 1;
+        int expected = 2;
         int actual = 3 - 1;
         JankUnit.assertThat(expected == actual);
     }
